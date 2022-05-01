@@ -9,19 +9,11 @@
     "start": "NODE_ENV=development nest start --watch",
     "start:prod": "node dist/main"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/earnkeeper/ekp-splinterlands.git"
-  },
   "author": "Gavin Shaw",
   "license": "GPL-3.0-or-later",
-  "bugs": {
-    "url": "https://github.com/earnkeeper/ekp-splinterlands/issues"
-  },
-  "homepage": "https://github.com/earnkeeper/ekp-splinterlands#readme",
   "dependencies": {
     "@earnkeeper/ekp-sdk": "0.2.16",
-    "@earnkeeper/ekp-sdk-nestjs": "1.1.12",
+    "@earnkeeper/ekp-sdk-nestjs": "1.1.14",
     "@nestjs/schedule": "^1.1.0",
     "axios-https-proxy-fix": "^0.17.1",
     "module-alias": "^2.2.2"
