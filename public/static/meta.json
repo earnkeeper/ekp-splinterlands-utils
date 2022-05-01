@@ -1,0 +1,9 @@
+{
+  "id": "splinterlands-utils",
+  "gameId": "splinterlands",
+  "name": "Game Browser",
+  "github": "https://github.com/earnkeeper/ekp-splinterlands-utils",
+  "image": "/static/market.jpeg",
+  "mainPage": "cardbrowser",
+  "description": "Browse detailed statistics about the game, card browser, battle stats and more"
+}
