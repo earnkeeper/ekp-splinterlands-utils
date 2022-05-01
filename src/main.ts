@@ -1,11 +1,16 @@
 import { Cluster } from '@earnkeeper/ekp-sdk-nestjs';
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import * as cluster from 'cluster';
+import 'module-alias/register';
+import { join } from 'path';
 import { GatewayModule } from './gateway.module';
 import { WorkerModule } from './worker.module';
 
 const gatewayBootstrap = async () => {
-  const app = await NestFactory.create(GatewayModule);
+  const app = await NestFactory.create<NestExpressApplication>(GatewayModule);
+  app.enableCors();
+  app.useStaticAssets(join(__dirname, '..', 'public'));
   app.enableShutdownHooks();
   await app.listen(3001);
 };

@@ -1,5 +1,7 @@
 FROM node:16.13.1
 
+EXPOSE 3001
+
 WORKDIR /app 
 
 COPY package.json /app 
