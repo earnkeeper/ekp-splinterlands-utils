@@ -5,5 +5,6 @@
   "github": "https://github.com/earnkeeper/ekp-splinterlands-utils",
   "image": "/static/market.jpeg",
   "mainPage": "cardbrowser",
-  "description": "Browse detailed statistics about the game, card browser, battle stats and more"
+  "description": "Browse detailed statistics about the game, card browser, battle stats and more",
+  "features": ["NFT Browser", "Global Stats"]
 }
