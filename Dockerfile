@@ -7,13 +7,13 @@ COPY package-lock.json /app
 
 RUN npm ci
 
-COPY ./src /app 
+COPY ./src ./src
 COPY ./public ./public
-COPY ./LICENSE /app 
-COPY ./nest-cli.json /app 
-COPY ./README.md /app 
-COPY ./tsconfig.build.json /app 
-COPY ./tsconfig.json /app 
+COPY ./LICENSE ./
+COPY ./nest-cli.json ./
+COPY ./README.md ./
+COPY ./tsconfig.build.json ./ 
+COPY ./tsconfig.json ./ 
 
 RUN npm run build
 
