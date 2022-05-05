@@ -5,6 +5,7 @@ import * as cluster from 'cluster';
 import 'module-alias/register';
 import { join } from 'path';
 import { GatewayModule } from './gateway.module';
+import { ScheduleApp } from './schedule.app';
 import { WorkerModule } from './worker.module';
 
 const gatewayBootstrap = async () => {
@@ -21,12 +22,21 @@ const workerBootstrap = async () => {
   await app.init();
 };
 
+const scheduleBootstrap = async () => {
+  const app = await NestFactory.create<NestExpressApplication>(ScheduleApp);
+  app.enableShutdownHooks();
+  await app.init();
+};
+
 switch (process.env.PROCESS_TYPE) {
   case 'GATEWAY':
     Cluster.register(16, gatewayBootstrap);
     break;
   case 'WORKER':
     Cluster.register(16, workerBootstrap);
+    break;
+  case 'SCHEDULE':
+    scheduleBootstrap();
     break;
   default:
     const combinedBootstrap = async () => {

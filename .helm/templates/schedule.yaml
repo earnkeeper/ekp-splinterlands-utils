@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app-deploy
+  name: schedule-deploy
 spec:
   selector:
     matchLabels:
-      app: app
+      app: schedule
   revisionHistoryLimit: 3
   strategy:
     type: RollingUpdate
@@ -13,7 +13,7 @@ spec:
   template:
     metadata:
       labels:
-        app: app
+        app: schedule
     spec:
       containers:
         - name: nodejs
@@ -44,7 +44,5 @@ spec:
               value: '{{ .Values.proxy.host }}'
             - name: PROXY_PORT
               value: '{{ .Values.proxy.port }}'
-          ports:
-            - containerPort: 3001
-              protocol: TCP
-
+            - name: PROCESS_TYPE
+              value: 'SCHEDULE'
