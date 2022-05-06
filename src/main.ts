@@ -5,7 +5,7 @@ import * as cluster from 'cluster';
 import 'module-alias/register';
 import { join } from 'path';
 import { GatewayModule } from './gateway.module';
-import { ScheduleApp } from './schedule.app';
+import processBattleStats from './schedule/processBattleStats';
 import { WorkerModule } from './worker.module';
 
 const gatewayBootstrap = async () => {
@@ -23,9 +23,7 @@ const workerBootstrap = async () => {
 };
 
 const scheduleBootstrap = async () => {
-  const app = await NestFactory.create<NestExpressApplication>(ScheduleApp);
-  app.enableShutdownHooks();
-  await app.init();
+  processBattleStats();
 };
 
 switch (process.env.PROCESS_TYPE) {
