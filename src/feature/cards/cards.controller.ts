@@ -14,7 +14,6 @@ import {
 import { Injectable } from '@nestjs/common';
 import { CardsService } from './cards.service';
 import { CardDocument } from './ui/cards.document';
-import page from './ui/cards.uielement';
 
 const COLLECTION_NAME = collection(CardDocument);
 const PATH = 'cardbrowser';
@@ -30,17 +29,16 @@ export class CardsController extends AbstractController {
   }
 
   async onClientConnected(event: ClientConnectedEvent) {
-    await this.clientService.emitMenu(event, {
-      id: PATH,
-      title: 'Card Browser',
-      navLink: PATH,
-      icon: 'search',
-    });
-
-    await this.clientService.emitPage(event, {
-      id: PATH,
-      element: page(),
-    });
+    // await this.clientService.emitMenu(event, {
+    //   id: PATH,
+    //   title: 'Card Browser',
+    //   navLink: PATH,
+    //   icon: 'search',
+    // });
+    // await this.clientService.emitPage(event, {
+    //   id: PATH,
+    //   element: page(),
+    // });
   }
 
   async onClientRpc(event: RpcEvent) {
