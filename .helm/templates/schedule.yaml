@@ -1,29 +1,22 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: batch/v1
+kind: CronJob
 metadata:
-  name: schedule-deploy
+  name: schedule
 spec:
-  selector:
-    matchLabels:
-      app: schedule
-  revisionHistoryLimit: 3
-  strategy:
-    type: RollingUpdate
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: schedule
+  schedule: "0 * * * *"
+  jobTemplate:
     spec:
-      containers:
-        - name: nodejs
-          image: '{{ .Values.werf.image.app }}'
-          workingDir: /app
-          env:
-            - name: EKP_PLUGIN_ID
-              value: '{{ .Chart.Name }}'
-            - name: EKP_PLUGIN_NAME
-              value: '.'
+      template:
+        metadata:
+          labels:
+            job: schedule
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: nodejs
+              image: "{{ .Values.werf.image.app }}"
+              workingDir: /app
+              env:
             - name: MONGO_URI
               value: '{{ .Values.mongodb.uri }}'
             - name: REDIS_HOST
