@@ -28,7 +28,6 @@ export default async function processBattleStats() {
   const redis = new Redis({
     port: config('REDIS_PORT', { cast: 'number', default: 6379 }),
     host: config('REDIS_HOST', { default: '127.0.0.1' }),
-    username: config('REDIS_USERNAME', { required: false }),
     password: config('REDIS_PASSWORD', { required: false }),
     db: config('REDIS_DB', { default: 0, cast: 'number' }),
   });
