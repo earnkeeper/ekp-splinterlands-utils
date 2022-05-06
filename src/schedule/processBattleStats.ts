@@ -35,27 +35,20 @@ export default async function processBattleStats() {
 
   console.log('Redis connected');
 
-  const [viewBag, battlesByLeague, battlesByTimestamp, battlesByManaCap] =
-    await Promise.all([
-      getViewBag(),
-      getBattlesByLeague(),
-      getBattlesByTimestamp(),
-      getBattlesByManaCap(),
-    ]);
-
-  await redis.set(CACHE_STATS_VIEW_BAG, JSON.stringify(viewBag));
-  await redis.set(
-    CACHE_STATS_BATTLES_BY_LEAGUE,
-    JSON.stringify(battlesByLeague),
-  );
-  await redis.set(
-    CACHE_STATS_BATTLES_BY_TIMESTAMP,
-    JSON.stringify(battlesByTimestamp),
-  );
-  await redis.set(
-    CACHE_STATS_BATTLES_BY_MANA_CAP,
-    JSON.stringify(battlesByManaCap),
-  );
+  await Promise.all([
+    getViewBag().then((result) =>
+      redis.set(CACHE_STATS_VIEW_BAG, JSON.stringify(result)),
+    ),
+    getBattlesByLeague().then((result) =>
+      redis.set(CACHE_STATS_BATTLES_BY_LEAGUE, JSON.stringify(result)),
+    ),
+    getBattlesByTimestamp().then((result) =>
+      redis.set(CACHE_STATS_BATTLES_BY_TIMESTAMP, JSON.stringify(result)),
+    ),
+    getBattlesByManaCap().then((result) =>
+      redis.set(CACHE_STATS_BATTLES_BY_MANA_CAP, JSON.stringify(result)),
+    ),
+  ]);
 
   await redis.quit();
   console.log('Redis disconnected');

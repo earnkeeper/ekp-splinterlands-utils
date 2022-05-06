@@ -151,6 +151,8 @@ export class StatsController extends AbstractController {
 
     const document = await this.statsService.getViewBag();
 
+    console.log(document);
+
     if (!document) {
       return;
     }
