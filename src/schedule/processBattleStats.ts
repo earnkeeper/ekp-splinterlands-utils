@@ -1,3 +1,4 @@
+import { logger } from '@earnkeeper/ekp-sdk-nestjs';
 import Redis from 'ioredis';
 import _ from 'lodash';
 import moment from 'moment';
@@ -17,42 +18,47 @@ import { config } from './config';
 import { Battle } from './db/battle';
 
 export default async function processBattleStats() {
-  const mongoose = await connect(
-    config('MONGO_URI', {
-      default: 'mongodb://localhost:27017/splinterlands-data',
-    }),
-  );
+  try {
+    const mongoose = await connect(
+      config('MONGO_URI', {
+        default: 'mongodb://localhost:27017/splinterlands-data',
+      }),
+    );
 
-  console.log('Mongodb connected');
+    console.log('Mongodb connected');
 
-  const redis = new Redis({
-    port: config('REDIS_PORT', { cast: 'number', default: 6379 }),
-    host: config('REDIS_HOST', { default: '127.0.0.1' }),
-    password: config('REDIS_PASSWORD', { required: false }),
-    db: config('REDIS_DB', { default: 0, cast: 'number' }),
-  });
+    const redis = new Redis({
+      port: config('REDIS_PORT', { cast: 'number', default: 6379 }),
+      host: config('REDIS_HOST', { default: '127.0.0.1' }),
+      password: config('REDIS_PASSWORD', { required: false }),
+      db: config('REDIS_DB', { default: 0, cast: 'number' }),
+    });
 
-  console.log('Redis connected');
+    console.log('Redis connected');
 
-  await Promise.all([
-    getViewBag().then((result) =>
-      redis.set(CACHE_STATS_VIEW_BAG, JSON.stringify(result)),
-    ),
-    getBattlesByLeague().then((result) =>
-      redis.set(CACHE_STATS_BATTLES_BY_LEAGUE, JSON.stringify(result)),
-    ),
-    getBattlesByTimestamp().then((result) =>
-      redis.set(CACHE_STATS_BATTLES_BY_TIMESTAMP, JSON.stringify(result)),
-    ),
-    getBattlesByManaCap().then((result) =>
-      redis.set(CACHE_STATS_BATTLES_BY_MANA_CAP, JSON.stringify(result)),
-    ),
-  ]);
+    await Promise.all([
+      getViewBag().then((result) =>
+        redis.set(CACHE_STATS_VIEW_BAG, JSON.stringify(result)),
+      ),
+      getBattlesByLeague().then((result) =>
+        redis.set(CACHE_STATS_BATTLES_BY_LEAGUE, JSON.stringify(result)),
+      ),
+      getBattlesByTimestamp().then((result) =>
+        redis.set(CACHE_STATS_BATTLES_BY_TIMESTAMP, JSON.stringify(result)),
+      ),
+      getBattlesByManaCap().then((result) =>
+        redis.set(CACHE_STATS_BATTLES_BY_MANA_CAP, JSON.stringify(result)),
+      ),
+    ]);
 
-  await redis.quit();
-  console.log('Redis disconnected');
-  await mongoose.connection.close();
-  console.log('Mongoose disconnected');
+    await redis.quit();
+    console.log('Redis disconnected');
+    await mongoose.connection.close();
+    console.log('Mongoose disconnected');
+  } catch (error) {
+    logger.error(error);
+    console.error(error);
+  }
 }
 
 async function getViewBag(): Promise<StatsViewBagDocument> {
