@@ -59,7 +59,9 @@ export class CardsController extends AbstractController {
       await this.clientService.removeOldLayers(event, COLLECTION_NAME);
 
       for (const document of documents) {
-        this.clientService.emitDocuments(event, COLLECTION_NAME, [document]);
+        this.clientService.emitPartialDocuments(event, COLLECTION_NAME, [
+          document,
+        ]);
       }
     } catch (error) {
       this.apmService.captureError(error);
