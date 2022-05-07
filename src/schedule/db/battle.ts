@@ -40,6 +40,10 @@ export const battleSchema = new Schema({
   players: Array,
   team1: Array,
   team2: Array,
-});
+})
+  .index({ timestamp: 1 })
+  .index({ source: 1, timestampDate: 1 })
+  .index({ source: 1, leagueGroup: 1 })
+  .index({ source: 1, manaCap: 1 });
 
 export const Battle = model<IBattle>('battles_v7', battleSchema);

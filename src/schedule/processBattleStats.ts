@@ -64,21 +64,15 @@ export default async function processBattleStats() {
 async function getViewBag(): Promise<StatsViewBagDocument> {
   console.log('Processing View Bag');
 
-  await Battle.find({});
-
-  const [totalBattles, oldestBattle, latestBattle] = await Promise.all([
-    Battle.count(),
-    Battle.find()
-      .sort('timestamp')
-      .limit(1)
-      .exec()
-      .then((results) => results[0]),
-    Battle.find()
-      .sort('-timestamp')
-      .limit(1)
-      .exec()
-      .then((results) => results[0]),
-  ]);
+  console.time('totalBattles');
+  const totalBattles = await Battle.countDocuments();
+  console.timeEnd('totalBattles');
+  console.time('oldestBattle');
+  const oldestBattle = await Battle.findOne({ $orderBy: { timestamp: 1 } });
+  console.timeEnd('oldestBattle');
+  console.time('latestBattle');
+  const latestBattle = await Battle.findOne({ $orderBy: { timestamp: -1 } });
+  console.timeEnd('latestBattle');
 
   console.log('Processing View Bag Done');
 
