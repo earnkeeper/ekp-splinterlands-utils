@@ -56,6 +56,8 @@ export class CardsController extends AbstractController {
     try {
       const documents = await this.collectionService.getCardDocuments();
 
+      await this.clientService.removeOldLayers(event, COLLECTION_NAME);
+
       for (const document of documents) {
         this.clientService.emitDocuments(event, COLLECTION_NAME, [document]);
       }
